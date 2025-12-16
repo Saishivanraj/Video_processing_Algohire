@@ -1,6 +1,9 @@
 AlgoHire – Asynchronous Video Processing System
+Overview
 
-This repository contains a full-stack asynchronous video processing system built for the AlgoHire (Video Forge) Hackathon. The application allows users to upload videos, generate multiple output variants asynchronously, track task progress in real time, and download processed files once completed.
+This repository contains a full-stack asynchronous video processing system built for the AlgoHire (Video Forge) Hackathon.
+
+The application allows users to upload videos, generate multiple output variants asynchronously, track task progress in real time, and download processed files once completed.
 
 The project focuses on system design, asynchronous job handling, persistent state management, and explainability, rather than only media encoding.
 
@@ -8,17 +11,31 @@ Features
 
 Asynchronous video processing using a background worker
 
-Supports MP4, WebM, and MOV input formats (up to 200 MB)
+Supports MP4, MOV, and WebM input formats (up to 200 MB)
 
-Generates multiple output variants per video:
+Multiple output variants per video:
 
 MP4 (H.264 + AAC)
 
 WebM (VP9 + Opus)
 
-Resolution profiles: 480p, 720p, 1080p
+Resolution profiles:
 
-Persistent task lifecycle tracking (Queued, Processing, Completed, Failed)
+480p
+
+720p
+
+1080p
+
+Persistent task lifecycle tracking:
+
+Queued
+
+Processing
+
+Completed
+
+Failed
 
 Real-time progress and bitrate updates
 
@@ -26,17 +43,33 @@ Independent task execution with failure isolation
 
 Admin option to clear all stored videos and tasks
 
-Responsive frontend with accurate backend state reflection
+Responsive frontend reflecting accurate backend state
 
 Tech Stack
 
-Frontend: React, Vite, Tailwind CSS
+Frontend
 
-Backend: Node.js, Express, TypeScript
+React
 
-Database: PostgreSQL with Prisma ORM
+Vite
 
-Video Processing: FFmpeg (via fluent-ffmpeg)
+Tailwind CSS
+
+Backend
+
+Node.js
+
+Express
+
+TypeScript
+
+Database
+
+PostgreSQL (Prisma ORM)
+
+Video Processing
+
+FFmpeg (via fluent-ffmpeg)
 
 Prerequisites
 
@@ -82,7 +115,8 @@ cd backend
 npm run dev
 
 
-Runs on http://localhost:3000
+Runs on:
+http://localhost:3000
 
 Terminal 2: Background Worker
 cd backend
@@ -96,7 +130,8 @@ cd frontend
 npm run dev
 
 
-Runs on http://localhost:5173 (or next available port).
+Runs on:
+http://localhost:5173 (or next available port)
 
 Usage Flow
 
