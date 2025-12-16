@@ -3,6 +3,7 @@ export interface Task {
     status: 'QUEUED' | 'PROCESSING' | 'COMPLETED' | 'FAILED';
     progress?: number;
     currentBitrate?: string;
+    outputSize?: number;
     variant: string; // "MP4-480p", "WebM-720p", etc.
     outputPath: string | null;
     error: string | null;

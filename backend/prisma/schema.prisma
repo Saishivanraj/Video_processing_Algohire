@@ -26,6 +26,7 @@ model Task {
   currentBitrate String?
   retries     Int        @default(0)
   outputPath  String?
+  outputSize  Int?       // Size in bytes of the processed file
   error       String?
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt

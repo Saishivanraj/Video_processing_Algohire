@@ -20,7 +20,7 @@ const VideoList: React.FC<{ refreshTrigger: number }> = ({ refreshTrigger }) => 
 
     useEffect(() => {
         fetchVideos();
-        const interval = setInterval(fetchVideos, 3000); // Poll every 3 seconds
+        const interval = setInterval(fetchVideos, 1000); // Poll every 1 second
         return () => clearInterval(interval);
     }, [refreshTrigger]);
 
@@ -70,7 +70,7 @@ const VideoList: React.FC<{ refreshTrigger: number }> = ({ refreshTrigger }) => 
                     <div className="p-6">
                         <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">Processing Tasks</h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                            {video.tasks.map((task) => <TaskCard key={task.id} task={task} />)}
+                            {video.tasks.map((task) => <TaskCard key={task.id} task={task} originalSize={video.size} />)}
                         </div>
                     </div>
                 </div>
@@ -88,7 +88,7 @@ const VideoList: React.FC<{ refreshTrigger: number }> = ({ refreshTrigger }) => 
     );
 };
 
-const TaskCard: React.FC<{ task: Task }> = ({ task }) => {
+const TaskCard: React.FC<{ task: Task; originalSize: number }> = ({ task, originalSize }) => {
     const getStatusConfig = (status: string) => {
         switch (status) {
             case 'QUEUED': return {
@@ -127,6 +127,24 @@ const TaskCard: React.FC<{ task: Task }> = ({ task }) => {
                     <div className="flex items-center gap-2">
                         <span className="font-semibold text-gray-900 text-sm">{fmt}</span>
                         {res && <span className="text-xs text-gray-500 bg-white px-1.5 py-0.5 rounded border border-gray-100">{res}</span>}
+                        {task.outputSize && originalSize && (
+                            (() => {
+                                const ratio = task.outputSize / originalSize;
+                                const isSmaller = ratio < 1;
+                                const percent = Math.round(Math.abs(1 - ratio) * 100);
+
+                                if (!isSmaller) return null;
+
+                                return (
+                                    <span
+                                        className="text-[10px] font-medium px-1.5 py-0.5 rounded border text-emerald-600 bg-emerald-50 border-emerald-100"
+                                        title="Space Saved"
+                                    >
+                                        {percent}% Smaller
+                                    </span>
+                                );
+                            })()
+                        )}
                     </div>
                     {task.status === 'PROCESSING' ? (
                         <div className="mt-1.5 w-full min-w-[120px]">
@@ -142,9 +160,16 @@ const TaskCard: React.FC<{ task: Task }> = ({ task }) => {
                             </div>
                         </div>
                     ) : (
-                        <span className={`text-xs font-medium uppercase tracking-wide mt-0.5 block ${config.text}`}>
-                            {config.label}
-                        </span>
+                        <div>
+                            <span className={`text-xs font-medium uppercase tracking-wide mt-0.5 block ${config.text}`}>
+                                {config.label}
+                            </span>
+                            {task.status === 'FAILED' && task.error && (
+                                <span className="text-[10px] text-red-500 font-medium block mt-0.5 max-w-[150px] truncate" title={task.error}>
+                                    {task.error}
+                                </span>
+                            )}
+                        </div>
                     )}
                 </div>
             </div>
