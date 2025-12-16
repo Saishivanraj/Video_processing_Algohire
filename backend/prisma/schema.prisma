@@ -1,0 +1,41 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Video {
+  id           String   @id @default(uuid())
+  originalName String
+  size         BigInt
+  path         String
+  createdAt    DateTime @default(now())
+  tasks        Task[]
+}
+
+model Task {
+  id          String     @id @default(uuid())
+  videoId     String
+  video       Video      @relation(fields: [videoId], references: [id])
+  variant     String
+  status      TaskStatus @default(QUEUED)
+  progress    Int        @default(0)
+  currentBitrate String?
+  retries     Int        @default(0)
+  outputPath  String?
+  error       String?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  startedAt   DateTime?
+  finishedAt  DateTime?
+}
+
+enum TaskStatus {
+  QUEUED
+  PROCESSING
+  COMPLETED
+  FAILED
+}
